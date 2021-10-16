@@ -1,0 +1,12 @@
+#provide the git url to this server
+#this serverwill connect to github repo
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/Mohanapriya-20/microconfig-repo.git
+          # uri: C:\Users\MohanapriyaV\Training\stsdemos\learnearnconfigrepo
+         
+server:  port: 8888

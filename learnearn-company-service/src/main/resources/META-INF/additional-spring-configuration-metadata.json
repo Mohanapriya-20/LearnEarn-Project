@@ -1,0 +1,32 @@
+{"properties": [
+  {
+    "name": "spring.eureka.client",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.eureka.client'"
+  },
+  {
+    "name": "server.client.service-url.default-zone",
+    "type": "java.lang.String",
+    "description": "A description for 'server.client.service-url.default-zone'"
+  },
+  {
+    "name": "server.eureka",
+    "type": "java.lang.String",
+    "description": "A description for 'server.eureka'"
+  },
+  {
+    "name": "application.name",
+    "type": "java.lang.String",
+    "description": "A description for 'application.name'"
+  },
+  {
+    "name": "application.config.import",
+    "type": "java.lang.String",
+    "description": "A description for 'application.config.import'"
+  },
+  {
+    "name": "config.import",
+    "type": "java.lang.String",
+    "description": "A description for 'config.import'"
+  }
+]}
