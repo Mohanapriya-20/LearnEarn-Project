@@ -1,0 +1,1 @@
+server:  port: 8082 eureka: client:  service-url:    default-zone: http://localhost:8761spring:  application:    name: BATCH-SERVICE         cloud:    config:      uri: https://github.com/Mohanapriya-20/learnearnconfig-repo.git  
