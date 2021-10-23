@@ -2,7 +2,6 @@ package com.learnearn.model;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,41 +12,48 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@Getter
+/**
+ * @author MohanapriyaV
+ *
+ */
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Entity
 public class Company {
 	@Id
 	@GeneratedValue(generator = "company_gen", strategy = GenerationType.AUTO)
 	@SequenceGenerator(name = "company_gen", sequenceName = "company_seq", initialValue = 101, allocationSize = 1)
 	private Integer companyId;
+	@Column(length = 20)
 	private String companyName;
+	@Column(length = 20)
 	private String owner;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
+
 	@Enumerated(EnumType.STRING)
-	@Column(length = 8)
+	@Column(length = 20)
 	private PostStatus status;
+
 	@Enumerated(EnumType.STRING)
-	@Column(length = 8)
+	@Column(length = 20)
 	private PostPriority priority;
-	@OneToMany // store the company and then Add the companyId while adding batchlist
+
+	@OneToMany // store company and add company id while adding batchlist
 	@JoinColumn(name = "company_id")
-	Set<Batch> batchList;
+	private Set<Batch> batchList;
+
 	@OneToMany
 	@JoinColumn(name = "company_id")
-	Set<Course> courseList;
+	@JsonIgnore
+	private Set<Course> courseList;
 
 }

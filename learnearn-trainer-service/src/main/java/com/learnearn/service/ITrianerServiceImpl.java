@@ -4,8 +4,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.learnearn.model.Company;
+import com.learnearn.model.Course;
 import com.learnearn.model.PostAvailability;
 import com.learnearn.model.PostStatus;
 import com.learnearn.model.Trainer;
@@ -16,6 +20,12 @@ public class ITrianerServiceImpl implements ITrainerService{
 	
 	@Autowired
 	ITrainerRepository trainerRepository;
+	
+	
+	@Autowired
+	RestTemplate restTemplate;
+
+	public static final String BASEURL = "http://localhost:8083/course-service/courses";
 
 	@Override
 	public List<Trainer> getAll() {
@@ -70,16 +80,25 @@ public class ITrianerServiceImpl implements ITrainerService{
 	}
 
 	@Override
-	public Trainer assignTrainer(int courseId, int trainerId) {
-			
-		return trainerRepository.assignTrainer(courseId, trainerId);
+	public void assignTrainer(int courseId, int trainerId) {
+		String courseUrl=BASEURL+"/id/"+courseId;
+		ResponseEntity<Course> courseRes=restTemplate.getForEntity(courseUrl,Course.class);
+		Course course=courseRes.getBody();
+		Trainer trainer=getById(trainerId);
+		trainer.setCourse(course);
+		trainer.setAvailability(PostAvailability.NOTAVAILABLE);
+		course.setStatus(PostStatus.INPROGRESS);
+		trainerRepository.save(trainer);
 	}
 
 	@Override
-	public Trainer deAssignTrainer(int courseId,int trainerId) {
-		return trainerRepository.deAssignTrainer(courseId, trainerId);
+	public void deAssignTrainer(int trainerId) {
+		Trainer trainer=getById(trainerId);
+		trainer.setCourse(null);
+		trainer.setAvailability(PostAvailability.AVAILABLE);
+		trainerRepository.save(trainer);
 	}
 
-	
+
 
 }

@@ -31,9 +31,11 @@ public interface ITrainerService {
 	
 	List<Trainer> viewTrainer();
 	
-	Trainer assignTrainer(int courseId, int trainerId);
+	void assignTrainer(int courseId, int trainerId);
 	
-	Trainer deAssignTrainer(int courseId,int trainerId);
+	void deAssignTrainer(int trainerId);
+	
+	
 	
 
 }

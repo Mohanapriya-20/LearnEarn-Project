@@ -89,7 +89,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	protected ResponseEntity<Object> handleOtherException(Exception ex) {
-		String message = ex.getMessage();
+		//here need to check
+		String message =ex.getMessage();
 		LocalDateTime timestamp = LocalDateTime.now();
 		String error = "Other Exceptions";
 		ApiErrors errors = new ApiErrors(timestamp, message, HttpStatus.BAD_GATEWAY.value(), error);

@@ -41,13 +41,6 @@ public interface ITrainerRepository extends JpaRepository<Trainer, Integer> {
 	@Query("from Trainer t inner join t.course cs where cs.status= ?1 and t.trainerName= ?2")
 	List<Trainer> findByCourseStatusAnd(PostStatus status, String trainerName);
 	
-	@Modifying
-	@Query("update Trainer t set t.course=?1 where t.trainerId=?2")
-	Trainer assignTrainer(int courseId,int trainerId);
-
-	@Modifying
-	@Query("update Trainer t set t.course=?1 where t.trainerId=?2")
-	Trainer deAssignTrainer(int courseId,int trainerId);
 	
 	
 

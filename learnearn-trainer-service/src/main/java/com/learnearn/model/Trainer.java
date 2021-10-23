@@ -33,7 +33,7 @@ public class Trainer {
 	private String courseType;
 	
 	@Enumerated(EnumType.STRING)
-    @Column(length = 8)
+    @Column(length = 20)
     private PostAvailability availability;
 	
 	@OneToOne

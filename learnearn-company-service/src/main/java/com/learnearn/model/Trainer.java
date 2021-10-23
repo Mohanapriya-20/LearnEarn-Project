@@ -1,7 +1,5 @@
 package com.learnearn.model;
 
-import java.time.LocalDate;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,12 +20,11 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Entity
 public class Trainer {
-	
 	@Id
 	@GeneratedValue(generator = "course_gen",strategy = GenerationType.AUTO)
 	@SequenceGenerator(name = "course_gen",sequenceName = "course_seq",initialValue = 501,allocationSize = 1)
@@ -37,17 +33,12 @@ public class Trainer {
 	private String courseType;
 	
 	@Enumerated(EnumType.STRING)
-    @Column(length = 8)
+    @Column(length = 20)
     private PostAvailability availability;
 	
 	@OneToOne
 	@JoinColumn(name="course_id")
 	Course course;
-	
-	
-	
-	
-	
 	
 	
 

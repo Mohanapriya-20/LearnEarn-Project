@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,56 +22,43 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Company {
-
 	@Id
-	@GeneratedValue(generator = "company_gen", strategy = GenerationType.AUTO)
-	@SequenceGenerator(name = "company_gen", sequenceName = "company_seq", initialValue = 101, allocationSize = 1)
+	@GeneratedValue(generator = "company_gen",strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "company_gen",sequenceName = "company_seq",initialValue = 101,allocationSize = 1)
 	private Integer companyId;
+	@Column(length = 20)
 	private String companyName;
-
+	@Column(length = 20)
 	private String owner;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 
 	@Enumerated(EnumType.STRING)
-	@Column(length = 9)
+	@Column(length = 20)
 	private PostStatus status;
 
 	@Enumerated(EnumType.STRING)
-	@Column(length = 9)
+	@Column(length = 20)
 	private PostPriority priority;
-	
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "company_id")
-	private Set<Batch> batchList;// one to many
-	
-	@JsonIgnore
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "company_id")
-	private Set<Course> courseList;// one to many
 
-	public Company(String companyName, String owner, LocalDateTime startDate, LocalDateTime endDate, PostStatus status,
-			PostPriority priority) {
-		super();
-		this.companyName = companyName;
-		this.owner = owner;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.status = status;
-		this.priority = priority;
-	}
+	@OneToMany//store company and add company id while adding batchlist
+	@JoinColumn(name = "company_id")
+	private Set<Batch> batchList;
 
-	@Override
-	public String toString() {
-		return "Company [companyName=" + companyName + ", owner=" + owner + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", status=" + status + ", priority=" + priority + "]";
-	}
+	@OneToMany
+	@JoinColumn(name = "company_id")
+	@JsonIgnore
+	private Set<Course> courseList;
+
+	
+	
 
 }

@@ -1,5 +1,9 @@
 package com.learnearn.exceptions;
 
+/**
+ * @author MohanapriyaV
+ *
+ */
 public class CourseNotFoundException extends RuntimeException {
 
 	public CourseNotFoundException() {

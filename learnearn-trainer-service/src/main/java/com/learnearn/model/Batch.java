@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,21 +36,24 @@ public class Batch {
 	@GeneratedValue(generator = "batch_gen",strategy = GenerationType.AUTO)
 	@SequenceGenerator(name = "batch_gen",sequenceName = "batch_seq",initialValue = 1,allocationSize = 1)
 	private Integer batchId;
+	@Column(length = 20)
 	private String batchName;
+	@Column(length = 20)
 	private String owner;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 
 	@Enumerated(EnumType.STRING)
-	@Column(length = 8)
+	@Column(length = 20)
 	private PostStatus status;
 
 	@Enumerated(EnumType.STRING)
-	@Column(length = 8)
+	@Column(length = 20)
 	private PostPriority priority;
 
 	@ManyToOne
 	@JoinColumn(name = "company_id")
+	@JsonIgnore
 	private Company company;
 
 	@OneToMany

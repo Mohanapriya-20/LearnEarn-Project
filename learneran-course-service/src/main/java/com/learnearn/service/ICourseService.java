@@ -15,30 +15,43 @@ public interface ICourseService {
 
 	List<Course> getAll();
 
-	Course addCourse(Course course);
+	Course addCourse(Course course, int companyId, int batchId);
 
 	void updateCourse(Course course);
 
 	void deleteCourse(int courseId);
-	
-	//
-	Course getByCourseId(int courseId) throws IdNotFoundException;
-	List<Course> getByCourseName(String courseName) throws CourseNotFoundException;
-	List<Course> getByOwner(String owner)throws CourseNotFoundException;
-	List<Course> getByStratDateAndEndDate(LocalDateTime startDate,LocalDateTime endDate)throws CourseNotFoundException;
-	List<Course> getByStatus(PostStatus status)throws CourseNotFoundException;
-	List<Course> getByPriority(PostPriority priority)throws CourseNotFoundException;
-	
-	//custom
-	List<Course> getByCompanyNameCourseName(String companyName,String courseName)throws CourseNotFoundException;
-	List<Course> getByBatchNameCourseName(String batchName,String courseName)throws CourseNotFoundException;
-	List<Course> getByCompanyNameCourseStatus(String companyName,PostStatus status)throws CourseNotFoundException;
-	List<Course> getByCompanyNameCoursePriority(String companyName,PostPriority priority)throws CourseNotFoundException;
-	List<Course> getByBatchNameCourseStatus(String bacthName,PostStatus status)throws CourseNotFoundException;
-	List<Course> getByBatchNameCoursePriority(String bacthName,PostPriority priority)throws CourseNotFoundException;
 
-	//for resource
-	
+	Course getByCourseId(int courseId) throws IdNotFoundException;
+
+	List<Course> getByCourseName(String courseName) throws CourseNotFoundException;
+
+	List<Course> getByOwner(String owner) throws CourseNotFoundException;
+
+	List<Course> getByStratDateAndEndDate(LocalDateTime startDate, LocalDateTime endDate)
+			throws CourseNotFoundException;
+
+	List<Course> getByStatus(PostStatus status) throws CourseNotFoundException;
+
+	List<Course> getByPriority(PostPriority priority) throws CourseNotFoundException;
+
+	// custom
+	List<Course> getByCompanyNameCourseName(String companyName, String courseName) throws CourseNotFoundException;
+
+	List<Course> getByBatchNameCourseName(String batchName, String courseName) throws CourseNotFoundException;
+
+	List<Course> getByCompanyNameCourseStatus(String companyName, PostStatus status) throws CourseNotFoundException;
+
+	List<Course> getByCompanyNameCoursePriority(String companyName, PostPriority priority)
+			throws CourseNotFoundException;
+
+	List<Course> getByBatchNameCourseStatus(String batchName, PostStatus status) throws CourseNotFoundException;
+
+	List<Course> getByBatchNameCoursePriority(String batchName, PostPriority priority) throws CourseNotFoundException;
+
+	Trainer getCourseTrainerDetails(int courseId);
+
+	// for resource
+
 	Trainer getById(int trainerId);
 
 	List<Trainer> getByTrainerAvailability(PostAvailability availability);
@@ -54,13 +67,12 @@ public interface ICourseService {
 	List<Trainer> getByCourseStartDateAndAvailability(LocalDateTime courseStartDate, PostAvailability availability);
 
 	List<Trainer> getByCourseStatusAndTrainerName(PostStatus status, String trainerName);
-	
-	//view and asign
-	List<Trainer> viewTrainer();
-	
-	Trainer assignTrainer(int courseId,int trainerId);
-	
-	Trainer deAssignTrainer(int trainerId);
 
-	
+	// view and assign
+	List<Trainer> viewTrainer();
+
+	void assignTrainer(int courseId, int trainerId);
+
+	void deAssignTrainer(int courseId, int trainerId);
+
 }

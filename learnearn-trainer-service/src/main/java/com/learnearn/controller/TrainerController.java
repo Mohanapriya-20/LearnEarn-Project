@@ -116,20 +116,22 @@ public class TrainerController {
 	}
 
 	@GetMapping("/trainers/assigntrainer/courseId/{courseId}/trainerId/{trainerId}")
-	ResponseEntity<Trainer> assignTrainer(@PathVariable int courseId,@PathVariable int trainerId) {
+	void assignTrainer(@PathVariable int courseId,@PathVariable int trainerId) {
 		HttpHeaders headers=new HttpHeaders();
 		headers.add("desc","assign Trainers By courseId");
 		headers.add("info","Returning assigned Trainers By courseId");
-		Trainer trainer= trainerService.assignTrainer(courseId, trainerId);
-		return ResponseEntity.ok().headers(headers).body(trainer);
+		 trainerService.assignTrainer(courseId, trainerId);
+		 ResponseEntity.ok().headers(headers);
 	}
 	
-	@GetMapping("/trainers/deassigntrainer/courseId/{courseId}/trainerId/{trainerId}")
-	ResponseEntity<Trainer> deAssignTrainer(@PathVariable int courseId,@PathVariable int trainerId) {
+	@GetMapping("/trainers/deassigntrainer/trainerId/{trainerId}")
+	void deAssignTrainer(@PathVariable int trainerId) {
 		HttpHeaders headers=new HttpHeaders();
 		headers.add("desc","deassign Trainers By trainerId");
 		headers.add("info","Returning deassigned Trainers By trainerId");
-		Trainer trainer= trainerService.deAssignTrainer(courseId,trainerId);
-		return ResponseEntity.ok().headers(headers).body(trainer);
+		trainerService.deAssignTrainer(trainerId);
+		 ResponseEntity.ok().headers(headers);
 	}
+	
+
 }

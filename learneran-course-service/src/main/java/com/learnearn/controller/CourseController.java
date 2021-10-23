@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +34,13 @@ public class CourseController {
 		this.courseService = courseService;
 	}
 
-	@PostMapping("/courses")
-	Course addCourse(@RequestBody Course course) {
-		return courseService.addCourse(course);
+	@PostMapping("/courses/addcourse/companyid/{companyId}/batchid/{batchId}")
+	ResponseEntity<Course> addCourse(@RequestBody Course course, @PathVariable int companyId,
+			@PathVariable int batchId) {
+		Course courseNew = courseService.addCourse(course, companyId, batchId);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "course added");
+		return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(courseNew);
 	}
 
 	@PutMapping("/courses")
@@ -49,213 +54,246 @@ public class CourseController {
 	}
 
 	@GetMapping("/courses")
-	ResponseEntity<List<Course>> getAll() {	
-	HttpHeaders headers=new HttpHeaders();
-	headers.add("desc","Get all courses");
-	headers.add("info","Returning all courses");
-	List<Course> courseList=  courseService.getAll();
-	return ResponseEntity.ok().headers(headers).body(courseList);
+	ResponseEntity<List<Course>> getAll() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get all courses");
+		headers.add("info", "Returning all courses");
+		List<Course> courseList = courseService.getAll();
+		return ResponseEntity.ok().headers(headers).body(courseList);
 
 	}
 
 	@GetMapping("/courses/id/{courseId}")
 	ResponseEntity<Course> getByCourseId(@PathVariable int courseId) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get courses by id");
-		headers.add("info","Returning courses by id");
-		Course course= courseService.getByCourseId(courseId);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get courses by id");
+		headers.add("info", "Returning courses by id");
+		Course course = courseService.getByCourseId(courseId);
 		return ResponseEntity.ok().headers(headers).body(course);
 	}
 
 	@GetMapping("/courses/name/{courseName}")
 	ResponseEntity<List<Course>> getByCourseName(@PathVariable String courseName) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by course name");
-		headers.add("info","Returning courses by cousre name");
-		List<Course> courseList= courseService.getByCourseName(courseName);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by course name");
+		headers.add("info", "Returning courses by cousre name");
+		List<Course> courseList = courseService.getByCourseName(courseName);
 		return ResponseEntity.ok().headers(headers).body(courseList);
 	}
 
 	@GetMapping("/courses/owner/{owner}")
 	ResponseEntity<List<Course>> getByOwner(@PathVariable String owner) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by owner");
-		headers.add("info","Returning courses by owner");
-		List<Course> courseList= courseService.getByOwner(owner);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by owner");
+		headers.add("info", "Returning courses by owner");
+		List<Course> courseList = courseService.getByOwner(owner);
 		return ResponseEntity.ok().headers(headers).body(courseList);
 	}
 
 	@GetMapping("/courses/startdate/{startDate}/enddate/{endDate}")
-	ResponseEntity<List<Course>> getByStratDateAndEndDate(@PathVariable String startDate, @PathVariable String endDate) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by start and end date");
-		headers.add("info","Returning courses by start and end date");
-		List<Course> courseList= courseService.getByStratDateAndEndDate(LocalDateTime.parse(startDate), LocalDateTime.parse(endDate));
+	ResponseEntity<List<Course>> getByStratDateAndEndDate(@PathVariable String startDate,
+			@PathVariable String endDate) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by start and end date");
+		headers.add("info", "Returning courses by start and end date");
+		List<Course> courseList = courseService.getByStratDateAndEndDate(LocalDateTime.parse(startDate),
+				LocalDateTime.parse(endDate));
 		return ResponseEntity.ok().headers(headers).body(courseList);
 
 	}
 
 	@GetMapping("/courses/status/{status}")
 	ResponseEntity<List<Course>> getByStatus(@PathVariable PostStatus status) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by status");
-		headers.add("info","Returning courses by status");
-		List<Course> courseList= courseService.getByStatus(status);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by status");
+		headers.add("info", "Returning courses by status");
+		List<Course> courseList = courseService.getByStatus(status);
 		return ResponseEntity.ok().headers(headers).body(courseList);
 	}
 
 	@GetMapping("/courses/priority/{priority}")
 	ResponseEntity<List<Course>> getByPriority(@PathVariable PostPriority priority) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by priority");
-		headers.add("info","Returning courses by priority");
-		List<Course> courseList=  courseService.getByPriority(priority);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by priority");
+		headers.add("info", "Returning courses by priority");
+		List<Course> courseList = courseService.getByPriority(priority);
 		return ResponseEntity.ok().headers(headers).body(courseList);
 	}
 
 	@GetMapping("/courses/companyname/{companyName}/coursename/{courseName}")
-	ResponseEntity<List<Course>> getByCompanyNameCourseName(@PathVariable String companyName, @PathVariable String courseName) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by companyName and course name");
-		headers.add("info","Returning courses by ompanyName and course name");
-		List<Course> courseList= courseService.getByCompanyNameCourseName(companyName, courseName);
+	ResponseEntity<List<Course>> getByCompanyNameCourseName(@PathVariable String companyName,
+			@PathVariable String courseName) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by companyName and course name");
+		headers.add("info", "Returning courses by ompanyName and course name");
+		List<Course> courseList = courseService.getByCompanyNameCourseName(companyName, courseName);
 		return ResponseEntity.ok().headers(headers).body(courseList);
 	}
 
 	@GetMapping("/courses/batchname/{batchName}/coursename/{courseName}")
-	ResponseEntity<List<Course>> getByBatchNameCourseName(@PathVariable String batchName, @PathVariable String courseName) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by batchName and coursename");
-		headers.add("info","Returning courses by batchName and coursename");
-		List<Course> courseList= courseService.getByBatchNameCourseName(batchName, courseName);
+	ResponseEntity<List<Course>> getByBatchNameCourseName(@PathVariable String batchName,
+			@PathVariable String courseName) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by batchName and coursename");
+		headers.add("info", "Returning courses by batchName and coursename");
+		List<Course> courseList = courseService.getByBatchNameCourseName(batchName, courseName);
 		return ResponseEntity.ok().headers(headers).body(courseList);
 	}
 
 	@GetMapping("/courses/companyname/{companyName}/status/{status}")
-	ResponseEntity<List<Course>> getByCompanyNameCourseStatus(@PathVariable String companyName, @PathVariable PostStatus status) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by companyName and status");
-		headers.add("info","Returning courses by companyName and status");
-		List<Course> courseList= courseService.getByCompanyNameCourseStatus(companyName, status);
+	ResponseEntity<List<Course>> getByCompanyNameCourseStatus(@PathVariable String companyName,
+			@PathVariable PostStatus status) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by companyName and status");
+		headers.add("info", "Returning courses by companyName and status");
+		List<Course> courseList = courseService.getByCompanyNameCourseStatus(companyName, status);
 		return ResponseEntity.ok().headers(headers).body(courseList);
 	}
 
 	@GetMapping("/courses/companyname/{companyName}/priority/{priority}")
-	ResponseEntity<List<Course>> getByCompanyNameCoursePriority(@PathVariable String companyName, @PathVariable PostPriority priority) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by companyName and priority");
-		headers.add("info","Returning courses by companyName and priority");
-		List<Course> courseList= courseService.getByCompanyNameCoursePriority(companyName, priority);
+	ResponseEntity<List<Course>> getByCompanyNameCoursePriority(@PathVariable String companyName,
+			@PathVariable PostPriority priority) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by companyName and priority");
+		headers.add("info", "Returning courses by companyName and priority");
+		List<Course> courseList = courseService.getByCompanyNameCoursePriority(companyName, priority);
 		return ResponseEntity.ok().headers(headers).body(courseList);
 	}
 
-	@GetMapping("/courses/bacthname/{bacthName}/status/{status}")
-	ResponseEntity<List<Course>> getByBatchNameCourseStatus(@PathVariable String bacthName, @PathVariable PostStatus status) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by batchname and status");
-		headers.add("info","Returning courses by batchname and status");
-		List<Course> courseList= courseService.getByBatchNameCourseStatus(bacthName, status);
+	@GetMapping("/courses/batchname/{batchname}/status/{status}")
+	ResponseEntity<List<Course>> getByBatchNameCourseStatus(@PathVariable String batchname,
+			@PathVariable PostStatus status) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by batchname and status");
+		headers.add("info", "Returning courses by batchname and status");
+		List<Course> courseList = courseService.getByBatchNameCourseStatus(batchname, status);
 		return ResponseEntity.ok().headers(headers).body(courseList);
 	}
 
-	@GetMapping("/courses/bacthname/{bacthName}/priority/{priority}")
-	ResponseEntity<List<Course>> getByBatchNameCoursePriority(@PathVariable String bacthName, @PathVariable PostPriority priority) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get course by batchname and status");
-		headers.add("info","Returning courses by batchname and status");
-		List<Course> courseList=  courseService.getByBatchNameCoursePriority(bacthName, priority);
+	@GetMapping("/courses/batchname/{batchname}/priority/{priority}")
+	ResponseEntity<List<Course>> getByBatchNameCoursePriority(@PathVariable String batchname,
+			@PathVariable PostPriority priority) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get course by batchname and status");
+		headers.add("info", "Returning courses by batchname and status");
+		List<Course> courseList = courseService.getByBatchNameCoursePriority(batchname, priority);
 		return ResponseEntity.ok().headers(headers).body(courseList);
 	}
 
 	// calling resources
 	@GetMapping("/trainers/trainerid/{trainerId}")
 	ResponseEntity<Trainer> getById(@PathVariable int trainerId) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get resource by batchname and status");
-		headers.add("info","Returning resource by batchname and status");
-		Trainer trainer= courseService.getById(trainerId);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get resource by batchname and status");
+		headers.add("info", "Returning resource by batchname and status");
+		Trainer trainer = courseService.getById(trainerId);
 		return ResponseEntity.ok().headers(headers).body(trainer);
 	}
+
 	@GetMapping("/trainers/availability/{availability}")
 	ResponseEntity<List<Trainer>> getByTrainerAvailability(@PathVariable PostAvailability availability) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get resource by availability");
-		headers.add("info","Returning resource by availability");
-		List<Trainer> trainerList=  courseService.getByTrainerAvailability(availability);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get resource by availability");
+		headers.add("info", "Returning resource by availability");
+		List<Trainer> trainerList = courseService.getByTrainerAvailability(availability);
 		return ResponseEntity.ok().headers(headers).body(trainerList);
 	}
+
 	@GetMapping("/trainers/trainername/{trainerName}")
 	ResponseEntity<List<Trainer>> getByTrainerName(@PathVariable String trainerName) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get resource by trainerName");
-		headers.add("info","Returning resource by trainerName");
-		List<Trainer> trainerList=  courseService.getByTrainerName(trainerName);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get resource by trainerName");
+		headers.add("info", "Returning resource by trainerName");
+		List<Trainer> trainerList = courseService.getByTrainerName(trainerName);
 		return ResponseEntity.ok().headers(headers).body(trainerList);
 	}
+
 	@GetMapping("/trainers/coursename/{courseName}/trainername/{trainerName}")
-	ResponseEntity<List<Trainer>> getByCourseNameAndTrainerName(@PathVariable String courseName, @PathVariable String trainerName) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get resource by trainerName and coursename");
-		headers.add("info","Returning resource by trainerName and coursename");
-		List<Trainer> trainerList= courseService.getByCourseNameAndTrainerName(courseName, trainerName);
+	ResponseEntity<List<Trainer>> getByCourseNameAndTrainerName(@PathVariable String courseName,
+			@PathVariable String trainerName) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get resource by trainerName and coursename");
+		headers.add("info", "Returning resource by trainerName and coursename");
+		List<Trainer> trainerList = courseService.getByCourseNameAndTrainerName(courseName, trainerName);
 		return ResponseEntity.ok().headers(headers).body(trainerList);
 	}
+
 	@GetMapping("/trainers/coursename/{courseName}/availability/{availability}")
-	ResponseEntity<List<Trainer>> getByCourseNameAndAvailability(@PathVariable String courseName,@PathVariable PostAvailability availability) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get resource by trainerName and availability");
-		headers.add("info","Returning resource by trainerName and availability");
-		List<Trainer> trainerList=  courseService.getByCourseNameAndAvailability(courseName, availability);
+	ResponseEntity<List<Trainer>> getByCourseNameAndAvailability(@PathVariable String courseName,
+			@PathVariable PostAvailability availability) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get resource by trainerName and availability");
+		headers.add("info", "Returning resource by trainerName and availability");
+		List<Trainer> trainerList = courseService.getByCourseNameAndAvailability(courseName, availability);
 		return ResponseEntity.ok().headers(headers).body(trainerList);
 	}
+
 	@GetMapping("/trainers/courseowner/{courseOwner}/availability/{availability}")
-	ResponseEntity<List<Trainer>> getByOwnerAndTrainerName(@PathVariable String courseOwner,@PathVariable String trainerName) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get resource by trainerName and courseowner");
-		headers.add("info","Returning resource by trainerName and courseowner");
-		List<Trainer> trainerList=  courseService.getByOwnerAndTrainerName(courseOwner, trainerName);
+	ResponseEntity<List<Trainer>> getByOwnerAndTrainerName(@PathVariable String courseOwner,
+			@PathVariable String trainerName) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get resource by trainerName and courseowner");
+		headers.add("info", "Returning resource by trainerName and courseowner");
+		List<Trainer> trainerList = courseService.getByOwnerAndTrainerName(courseOwner, trainerName);
 		return ResponseEntity.ok().headers(headers).body(trainerList);
 	}
+
 	@GetMapping("/trainers/coursestartdate/{courseStartDate}/availability/{availability}")
-	ResponseEntity<List<Trainer>> getByCourseStartDateAndAvailability(@PathVariable String courseStartDate,@PathVariable PostAvailability availability) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get resource by courseStartDate and availability");
-		headers.add("info","Returning resource by courseStartDate and availability");
-		List<Trainer> trainerList= courseService.getByCourseStartDateAndAvailability(LocalDateTime.parse(courseStartDate), availability);
+	ResponseEntity<List<Trainer>> getByCourseStartDateAndAvailability(@PathVariable String courseStartDate,
+			@PathVariable PostAvailability availability) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get resource by courseStartDate and availability");
+		headers.add("info", "Returning resource by courseStartDate and availability");
+		List<Trainer> trainerList = courseService
+				.getByCourseStartDateAndAvailability(LocalDateTime.parse(courseStartDate), availability);
 		return ResponseEntity.ok().headers(headers).body(trainerList);
 	}
+
 	@GetMapping("/trainers/status/{status}/trainername/{trainerName}")
-	ResponseEntity<List<Trainer>> getByCourseStatusAndTrainerName(@PathVariable PostStatus status,@PathVariable String trainerName) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get resource by status and trainername");
-		headers.add("info","Returning resource by status and trainername");
-		List<Trainer> trainerList=  courseService.getByCourseStatusAndTrainerName(status, trainerName);
+	ResponseEntity<List<Trainer>> getByCourseStatusAndTrainerName(@PathVariable PostStatus status,
+			@PathVariable String trainerName) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get resource by status and trainername");
+		headers.add("info", "Returning resource by status and trainername");
+		List<Trainer> trainerList = courseService.getByCourseStatusAndTrainerName(status, trainerName);
 		return ResponseEntity.ok().headers(headers).body(trainerList);
 	}
 
 	// view and asign
 	@GetMapping("/trainers/view-trainers")
 	ResponseEntity<List<Trainer>> viewTrainer() {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","Get all resource");
-		headers.add("info","Returning all resource");
-		List<Trainer> trainerList= courseService.viewTrainer();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "Get all resource");
+		headers.add("info", "Returning all resource");
+		List<Trainer> trainerList = courseService.viewTrainer();
 		return ResponseEntity.ok().headers(headers).body(trainerList);
 	}
+
 	@GetMapping("/trainers/assign/courseid/{courseId}/trainerid/{trainerId}")
-	ResponseEntity<Trainer> assignTrainer(@PathVariable int courseId,@PathVariable int trainerId) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","assgin trainer");
-		headers.add("info","Returning asigned trainer");
-		Trainer trainer=  courseService.assignTrainer(courseId, trainerId);
+	void assignTrainer(@PathVariable int courseId, @PathVariable int trainerId) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "assign trainer");
+		headers.add("info", "Returning asigned trainer");
+		courseService.assignTrainer(courseId, trainerId);
+		ResponseEntity.ok().headers(headers);
+	}
+
+	@GetMapping("/trainers/deassign/courseid/{courseId}/trainerid/{trainerId}")
+	void deAssignTrainer(@PathVariable int courseId, @PathVariable int trainerId) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "deassgin trainer");
+		headers.add("info", "Returning deasigned trainer");
+		courseService.deAssignTrainer(courseId, trainerId);
+		ResponseEntity.ok().headers(headers);
+	}
+
+	@GetMapping("/trainers/get-trainer/{courseId}")
+	ResponseEntity<Trainer> getCourseTrainerDetails(@PathVariable int courseId) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("desc", "get trainer");
+		headers.add("info", "Returning assigned trainer");
+		Trainer trainer = courseService.getCourseTrainerDetails(courseId);
 		return ResponseEntity.ok().headers(headers).body(trainer);
 	}
-	@GetMapping("/trainers/deassign/trainerid/{trainerId}")
-	ResponseEntity<Trainer> deAssignTrainer(@PathVariable int trainerId) {
-		HttpHeaders headers=new HttpHeaders();
-		headers.add("desc","deassgin trainer");
-		headers.add("info","Returning deasigned trainer");
-		Trainer trainer= courseService.deAssignTrainer(trainerId);
-		return ResponseEntity.ok().headers(headers).body(trainer);
-	}
+
 }

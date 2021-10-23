@@ -181,7 +181,7 @@ public class ICompanyServiceImpl implements ICompanyService {
 	@Override
 	public void updateBatch(Batch batch) {
 		String url=BASEURL;
-		Batch batchObj = restTemplate.getForObject(url,Batch.class);
+		restTemplate.postForEntity(url,batch,Batch.class);
 		
 		
 	}
@@ -204,11 +204,8 @@ public class ICompanyServiceImpl implements ICompanyService {
 
 	@Override
 	public Batch getByBatchId(int batchId)  throws IdNotFoundException{
-		String url=BASEURL+"/batchId/"+batchId;
+		String url=BASEURL+"/"+batchId;
 	ResponseEntity<Batch> batch=restTemplate.getForEntity(url,Batch.class);
-		if(batch==null) {
-			throw new IdNotFoundException("Dude Id Not here!!!!");
-		}
 		return batch.getBody();
 	}
 

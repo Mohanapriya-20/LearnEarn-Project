@@ -1,6 +1,6 @@
 package com.learnearn.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,38 +27,39 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Entity
 public class Course {
-	
-	private String courseName;
 	@Id
-	@GeneratedValue(generator="course_gen",strategy=GenerationType.AUTO)
-	@SequenceGenerator(name="course_gen",sequenceName = "course_seq",initialValue = 1,allocationSize = 1)
+	@GeneratedValue(generator = "course_gen",strategy = GenerationType.AUTO)
+	@SequenceGenerator(name = "course_gen",sequenceName = "course_seq",initialValue = 1001,allocationSize = 1)
 	private Integer courseId;
+	@Column(length = 20)
+	private String courseName;
+	@Column(length = 20)
 	private String owner;
-	private LocalDate startDate;
-	private LocalDate endDate;
+	private LocalDateTime startDate;
+	private LocalDateTime endDate;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(length=9)
-	private PostStatus status;
+    @Column(length = 20)
+    private PostStatus status;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(length=9)
-	private PostPriority priority;
+	@Column(length = 20)
+    private PostPriority priority;
 	
-	
-
-
 	@ManyToOne
-	@JoinColumn(name="company_id")
+	@JoinColumn(name = "batch_id")
+	@JsonIgnore
+	private Batch batch;
+	
+	@ManyToOne
+	@JoinColumn(name = "company_id")
+	@JsonIgnore
 	private Company company;
 	
 	
-	
-	
-
 }

@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,17 +34,19 @@ public class Company {
 	@GeneratedValue(generator = "company_gen",strategy = GenerationType.AUTO)
 	@SequenceGenerator(name = "company_gen",sequenceName = "company_seq",initialValue = 101,allocationSize = 1)
 	private Integer companyId;
+	@Column(length = 20)
 	private String companyName;
+	@Column(length = 20)
 	private String owner;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 
 	@Enumerated(EnumType.STRING)
-	@Column(length = 8)
+	@Column(length = 20)
 	private PostStatus status;
 
 	@Enumerated(EnumType.STRING)
-	@Column(length = 8)
+	@Column(length = 20)
 	private PostPriority priority;
 
 	@OneToMany//store company and add company id while adding batchlist
@@ -51,13 +55,9 @@ public class Company {
 
 	@OneToMany
 	@JoinColumn(name = "company_id")
+	@JsonIgnore
 	private Set<Course> courseList;
 
-	@Override
-	public String toString() {
-		return "Company [companyName=" + companyName + ", owner=" + owner + ", startDate=" + startDate + ", endDate="
-				+ endDate + ", status=" + status + ", priority=" + priority + "]";
-	}
 	
 	
 
